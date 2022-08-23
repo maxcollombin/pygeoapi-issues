@@ -1,0 +1,223 @@
+# =================================================================
+#
+# Authors: Just van den Broecke <justb4@gmail.com>>
+#          Jorge Samuel Mendes de Jesus <jorge.dejesus@geocat.net>
+#          Tom Kraldis <tomkralidis@gmail.com>
+#
+# Copyright (c) 2019 Just van den Broecke
+# Copyright (c) 2019 Jorge Samuel Mendes de Jesus
+# Copyright (c) 2020 Tom Kralidis
+#
+# Permission is hereby granted, free of charge, to any person
+# obtaining a copy of this software and associated documentation
+# files (the "Software"), to deal in the Software without
+# restriction, including without limitation the rights to use,
+# copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the
+# Software is furnished to do so, subject to the following
+# conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+# OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+# HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+# WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+# FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+# OTHER DEALINGS IN THE SOFTWARE.
+#
+# =================================================================
+
+server:
+    bind:
+        host: 0.0.0.0
+        port: 5000
+    url: http://localhost:5000/
+    mimetype: application/json; charset=UTF-8
+    encoding: utf-8
+    gzip: false
+    language: en-US
+    cors: true
+    pretty_print: true
+    limit: 10
+    # templates: /path/to/templates
+    map:
+        url: https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png
+        attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia maps</a> | Map data &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+
+logging:
+    level: ERROR
+    #logfile: /tmp/pygeoapi.log
+
+metadata:
+    identification:
+        title: pygeoapi issues
+        description: some issues I'm currently encountering with pygeoapi
+        keywords:
+            - geospatial
+            - data
+            - api
+        keywords_type: theme
+        terms_of_service: https://creativecommons.org/licenses/by/4.0/
+        url: https://example.org
+    license:
+        name: CC-BY 4.0 license
+        url: https://creativecommons.org/licenses/by/4.0/
+    provider:
+        name: Organization Name
+        url: https://pygeoapi.io
+    contact:
+        name: Lastname, Firstname
+        position: Position Title
+        address: Mailing Address
+        city: City
+        stateorprovince: Administrative Area
+        postalcode: Zip or Postal Code
+        country: Country
+        phone: +xx-xxx-xxx-xxxx
+        fax: +xx-xxx-xxx-xxxx
+        email: you@example.org
+        url: Contact URL
+        hours: Hours of Service
+        instructions: During hours of service.  Off on weekends.
+        role: pointOfContact
+resources:
+# Collection # 1: SensorThings:
+    Things:
+        type: collection
+        title: SensorThings API
+        description: the projection system cannot be configured correctly
+        keywords:
+            - Things
+            - SensorThings
+            - SUPSI
+        crs:
+            - EPSG:21781
+            - EPSG:2056
+            - EPSG:4326
+            - EPSG:3857
+        context:
+            - sosa: "http://www.w3.org/ns/sosa/"
+              ssn: "http://www.w3.org/ns/ssn/"
+              Datastreams: sosa:ObservationCollection
+              name: schema:name
+        links:
+            - type: application/html
+              rel: canonical
+              title: data source
+              href: https://www.geoconnex.us
+              hreflang: en-US
+        extents:
+            spatial:
+                bbox: [8.382190025288718,45.81795848580136,9.159685205679905,46.63248393787126] #[672484.2952341952,75269.65910059492,732912.4406935901,165700.54066002963] 
+                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84 #https://www.opengis.net/def/crs/EPSG/0/21781 
+            temporal:
+                begin: null
+                end: null
+        providers:
+          - type: feature
+            name: SensorThings 
+            data: https://geoservice2.ist.supsi.ch/indg/frost/v1.1
+                # source_srs: EPSG:21781
+                # target_srs: EPSG:4326
+            entity: Things 
+            intralink: true
+            properties:
+                - name
+                - Datastreams
+                - '@iot.selfLink'
+    # Collection # 2: STAC
+    ndwi:
+        type: stac-collection
+        title: NDWI data served as a STAC collection
+        description: The pygeopi instance is started but the collection is not accessible
+        keywords:
+            - switzerland
+            - ndwi
+            - water
+            - landsat
+        links:
+            - type: text/html
+              rel: canonical
+              title: Metadata
+              href: https://geonetwork.swissdatacube.org/geonetwork/srv/eng/catalog.search#/metadata/1008ba03-a57d-42d0-b7d7-3a861d91c4be
+              hreflang: en-US
+            - type: text/html
+              rel: canonical
+              title: DOI
+              href: https://doi.org/10.26037/yareta:xzczpcai2nbp5l4na7rx2oelse
+              hreflang: en-US
+        extents:
+            spatial:
+                bbox: [5.84, 45.66, 10.98, 48.87]
+                crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+        providers:
+            - type: stac
+              name: FileSystem
+              data: data/ndwi/
+              file_types:
+                  - .tif
+    # # Collection # 3: NetCDF
+    # ndwi-nc:
+    #     type: collection
+    #     title: NetCDF file
+    #     description: The dataset can't be found or read. 
+    #     keywords:
+    #         - ndwi
+    #         - geneva
+    #     extents:
+    #         spatial:
+    #             bbox: [5.84, 45.66, 10.98, 48.87]
+    #             crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    #     links:
+    #         - type: text/html
+    #           rel: canonical
+    #           title: information
+    #           href: https://eccc-msc.github.io/open-data/msc-data/nwp_gdps/readme_gdps_en
+    #           hreflang: en-CA
+    #     providers:
+    #         - type: coverage
+    #           name: xarray
+    #           data: data/geneva_ndwi.nc
+    #           x_field: lat
+    #           y_field: lon
+    #           time_field: time
+    #           format:
+    #               name: netcdf
+    #               mimetype: application/x-netcdf2
+    # # Collection # 4: EDR from NetCDF
+    # ndwi-edr:
+    #     type: collection
+    #     title: EDR from NetCDF
+    #     description: The dataset can't be found or read.
+    #     keywords:
+    #         - ndwi
+    #         - geneva
+    #     extents:
+    #         spatial:
+    #             bbox: [5.84, 45.66, 10.98, 48.87]
+    #             crs: http://www.opengis.net/def/crs/OGC/1.3/CRS84
+    #     links:
+    #         - type: text/html
+    #           rel: canonical
+    #           title: information
+    #           href: https://eccc-msc.github.io/open-data/msc-data/nwp_gdps/readme_gdps_en
+    #           hreflang: en-CA
+    #     providers:
+    #         - type: edr
+    #           name: xarray-edr
+    #           data: data/geneva_ndwi.nc
+    #           x_field: lat
+    #           y_field: lon
+    #           time_field: time
+    #           format:
+    #               name: netcdf
+    #               mimetype: application/x-netcdf2
+    # Process # 1: ZonalStats
+    # zonal-stats:
+    #     type: process
+    #     processor:
+    #         name: ZonalStats
